@@ -9,6 +9,7 @@ import { lightTheme } from './Dash/styled'
 
 import Login from './Login'
 import User from './User'
+import AccountEdit from './AccountEdit'
 
 
 function App() {
@@ -24,6 +25,8 @@ function App() {
               <Route path="/users" element={<RequireAuth ><User /></RequireAuth>} />
               <Route path="/dash" element={<RequireAuth ><Dash /></RequireAuth>} />
               <Route path="/account" element={<RequireAuth ><Account /></RequireAuth>} />
+              <Route path="/account/:id" element={<RequireAuth ><AccountEdit /></RequireAuth>} />
+
             </Routes>
           </BrowserRouter>
         </ThemeProvider>

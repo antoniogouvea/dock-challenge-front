@@ -1,26 +1,37 @@
-import { useState } from "react";
+import { faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useCallback, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { api } from "../../api/axios.config";
 import Navbar from "../NavBar";
-import { Table, TBody, TBodyTR, TD, TDnav, TH, THead, THeadTR, Wrapper } from './styled';
-
+import { AccountType } from "../types/Account";
+import { TBody, TBodyTR, TD, TDnav, TH, THead, THeadTR, Table, Wrapper } from './styled';
 function Dash() {
-    const [accounts, setAccounts] = useState([
-        {
-            _id: '6425a958dd2499ea24b9ff28',
-            "agency": 1235,
-            "accountNumber": 459,
-            "client": {
-                "name": "John3"
-            }
-        },
-        {
-            _id: '6425aa40dd2499ea24b9ff2a',
-            "agency": 1235,
-            "accountNumber": 459,
-            "client": {
-                "name": "John3"
-            }
-        },
-    ])
+
+    const [accounts, setAccounts] = useState<AccountType[]>([])
+
+    const fetchAccounts = useCallback(async () => {
+        const results = await api.post('', {
+            query: `{
+                getAllaccounts: getAllAccounts {
+                    _id
+                    agency
+                    accountNumber
+                    client{
+                      name
+                    }
+              }}
+              `
+        })
+
+        setAccounts(results.data.data.getAllaccounts)
+    }, [])
+
+
+    useEffect(() => {
+        fetchAccounts()
+    }, [fetchAccounts])
+
     return (
         <>
             <Navbar />
@@ -34,22 +45,29 @@ function Dash() {
                         </THeadTR>
                     </THead>
                     <TBody>
-                        {accounts.map((account) => {
+                        {accounts.map((account: AccountType) => {
                             return (
                                 <TBodyTR className='account' key={account._id}>
                                     <TD>{account.accountNumber}</TD>
                                     <TD>{account.agency}</TD>
                                     <TD>{account.client.name}</TD>
-                                    <TDnav>Editar</TDnav>
-                                    <TDnav>Deletar</TDnav>
+                                    <TDnav>
+                                        <Link to={`/account/${account._id}`}>
+                                            <FontAwesomeIcon icon={faPenToSquare} />Editar
+                                        </Link>
+                                    </TDnav>
+                                    <TDnav><FontAwesomeIcon icon={faTrashCan} />&nbsp;Deletar</TDnav>
 
                                 </TBodyTR>
                             );
                         })}
                     </TBody>
                 </Table>
+
             </Wrapper>
         </>
     )
 }
 export default Dash
+
+

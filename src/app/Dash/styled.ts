@@ -68,13 +68,11 @@ export const TD = styled.td`
     padding: ${v.smSpacing};
     border: 1px solid ${({ theme }) => theme.bg2};
     font-size: 14px;
-    width:${v.smSpacing};
-    height:${v.smSpacing};
+    width:8%;
 `;
 
 export const TDnav = styled.td`
-    border: 1px solid ${({ theme }) => theme.bg2};
-    font-size: 14px;
+    font-size: 12px;
     width:1%;
     height:1px;
 `;
