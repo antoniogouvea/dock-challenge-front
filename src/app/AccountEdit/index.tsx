@@ -2,14 +2,14 @@ import { useParams } from "react-router-dom"
 import Navbar from "../NavBar"
 import { useCallback, useEffect, useState } from "react"
 import { api } from "../../api/axios.config"
-import { Box1, Box2, Box3, InputTitle, InputTitle2, InputValue, Wrapper } from "./styled"
+import { Box1, Box2, Box3, Button, InputTitle, InputValue, Wrapper, ButtonsWrapper, InputValue2 } from "./styled"
 import { AccountType } from "../types/Account"
 import { TBody, TBodyTR, TD, TH, THead, THeadTR, Table } from "../Dash/styled"
 
 const AccountEdit = () => {
     const { id } = useParams()
-    console.log("🚀 ~ file: index.tsx:11 ~ AccountEdit ~ id:", id)
     const [account, setAccount] = useState<AccountType>()
+    const [value, setValue] = useState('')
 
     const fetchAccount = useCallback(async () => {
         const results = await api.post('', {
@@ -30,10 +30,40 @@ const AccountEdit = () => {
                 }
               }`
         })
-        console.log(results.data.data.getAccountById)
         setAccount(results.data.data.getAccountById)
     }, [id])
 
+    const sendValueToAccount = async (type: string, accountNumber: number | undefined) => {
+        if (+value > 0) {
+            const results = await api.post('', {
+                query: `
+                mutation updateValueToAccount($value:Float!, $transactionType:String!, $user:String!, $account:String!) {
+                    updateValueToAccount(valueToUpdateArgs: {value:$value,transactionType: $transactionType,user:$user,account:$account }) {
+                      _id
+                      balance
+                      operations{
+                        _id
+                        createdAt
+                        value
+                        user
+                        
+                      }
+                    
+                  }
+                  
+            }`,
+                variables: {
+                    "value": +value,
+                    "transactionType": type,
+                    "user": "123",
+                    "account": accountNumber?.toString()
+
+                }
+
+            })
+            fetchAccount()
+        }
+    }
 
     useEffect(() => {
         fetchAccount()
@@ -43,24 +73,28 @@ const AccountEdit = () => {
         <>
             <Navbar />
             <Wrapper>
+
                 <Box1>
-                    <InputTitle2>Agência</InputTitle2>
+                    <InputTitle>Agência</InputTitle>
                     <InputValue>{account?.agency} </InputValue>
-                    <InputTitle2>Conta</InputTitle2>
+                    <InputTitle>Conta</InputTitle>
                     <InputValue>{account?.accountNumber}</InputValue>
-                    <InputTitle2>Nome do cliente</InputTitle2>
+                    <InputTitle>Nome do cliente</InputTitle>
                     <InputValue>{account?.client.name}</InputValue>
                 </Box1>
                 <Box2>
-                    <InputTitle2> Saldo</InputTitle2>
+                    <InputTitle> Saldo</InputTitle>
                     <InputValue>{account?.balance}</InputValue>
+
+                    <ButtonsWrapper>
+                        <InputTitle> Depositar/Sacar</InputTitle>
+                        <InputValue2 type="text" value={value} onInput={e => setValue(e.currentTarget.value)} />
+                        <Button onClick={() => sendValueToAccount('add', account?.accountNumber)}>Depositar</Button>
+                        <Button onClick={() => sendValueToAccount('withdraw', account?.accountNumber)}>Sacar</Button>
+                    </ButtonsWrapper>
                 </Box2>
-                {/* <div>
-                    <button >Depositar</button>
-                    <button>Sacar</button>
-                </div> */}
                 <Box3>
-                    <InputTitle2>Movimentações</InputTitle2>
+                    <InputTitle>Movimentações</InputTitle>
                     <Table >
                         <THead>
                             <THeadTR>
@@ -80,12 +114,7 @@ const AccountEdit = () => {
                         </TBody>
                     </Table>
                 </Box3>
-                {/* <Form>
-
-           </Form> */}
             </Wrapper>
-
-            {/* <div>{{ account }}</div> */}
         </>
     )
 }

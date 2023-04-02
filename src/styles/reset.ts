@@ -22,7 +22,6 @@ export const RESETCSS = css`
 	html,
 	body,
 	#root {
-		display: contents;
 		height: 100%;
 	}
 	/*

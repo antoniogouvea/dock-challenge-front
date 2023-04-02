@@ -59,7 +59,6 @@ body {
 	font-family: var(--font-primary);
 	color: var(--color-black);
 	scrollbar-color: var(--color-primary) white;
-	display: flex!important;
 	margin: 0;
 }
 `
