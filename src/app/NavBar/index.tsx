@@ -1,33 +1,42 @@
-import { Link, useMatch, useResolvedPath } from "react-router-dom"
-import { LI, Nav, UL, StyledLink } from "./styled"
-import { useEffect } from "react"
+import { Link, LinkProps, useMatch, useNavigate, useResolvedPath } from "react-router-dom"
+import { LI, Nav, UL, StyledLink, LinkText, LogoutLink } from "./styled"
+import { useContext, useEffect } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faFileInvoiceDollar, faHome, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
+import { AuthContext } from "../Auth/AuthContext"
 
 
 export default function Navbar() {
+  const auth = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await auth.signOut()
+    navigate('/login')
+  }
+
   useEffect(() => {
-    document.body.style.paddingTop = '60px';
+    document.body.style.paddingTop = '3em';
   }, [])
 
   return (
     <Nav className="nav">
       <StyledLink to="/dash" className="site-title">
-        <FontAwesomeIcon icon={faHome} />&nbsp;Dashboard
+        <FontAwesomeIcon icon={faHome} /><LinkText>Dashboard</LinkText>
       </StyledLink>
       <UL>
-        <CustomLink to="/users" ><FontAwesomeIcon icon={faUser} />&nbsp;Usuários</CustomLink>
-        <CustomLink to="/account"><FontAwesomeIcon icon={faFileInvoiceDollar} />&nbsp;Account</CustomLink>
-        <CustomLink to="/logout"><FontAwesomeIcon icon={faArrowRightFromBracket} />&nbsp;Logout</CustomLink>
+        <CustomLink to="/users"><FontAwesomeIcon icon={faUser} /><LinkText>Usuários</LinkText></CustomLink>
+        <CustomLink to="/account"><FontAwesomeIcon icon={faFileInvoiceDollar} /><LinkText>Account</LinkText></CustomLink>
+        <LogoutLink onClick={handleLogout}><FontAwesomeIcon icon={faArrowRightFromBracket} /><LinkText>Logout</LinkText></LogoutLink>
 
       </UL>
-    </Nav>
+    </Nav >
   )
 }
 type CustomLinkType = {
   to: string
   children?: any
-  props?: Element
+  props?: typeof Link
 }
 
 
@@ -38,7 +47,7 @@ function CustomLink({ to, children, ...props }: CustomLinkType) {
 
   return (
     <LI className={isActive ? "active" : ""}>
-      <StyledLink to={to} {...props}>
+      <StyledLink to={to} {...props} >
         {children}
       </StyledLink>
     </LI>

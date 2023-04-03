@@ -60,5 +60,6 @@ body {
 	color: var(--color-black);
 	scrollbar-color: var(--color-primary) white;
 	margin: 0;
+	background-color: var(--color-blue-button)
 }
 `

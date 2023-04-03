@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components/macro'
 
 export const v = {
@@ -79,9 +80,15 @@ export const TDnav = styled.td`
 
 export const Wrapper = styled.div`
 	display:flex;
-	border: 4px solid var(--color-blue-border);
 	border-radius: 3px;
     padding: 20px 20px 20px 25px;
     width:100%;
 	
+`
+export const StyledLink = styled(Link)`
+text-decoration: none;
+color: var(--color-black);
+:hover{
+    color: var(--color-background);
+}
 `

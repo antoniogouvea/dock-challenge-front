@@ -10,12 +10,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     useEffect(() => {
         const validateToken = async () => {
-            const token = localStorage.getItem('authToken');
+            const token = getToken();
             if (user != null) return
-            if (token && user === null) {
+            if (token) {
                 const data = await api.validateToken(token);
+                console.log("🚀 ~ file: AuthProvider.tsx:17 ~ validateToken ~ data:", data)
                 if (data.user) {
                     return setUser(data.user);
+                }
+                else {
+                    signOut()
                 }
             }
         }
@@ -34,7 +38,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     const signOut = async () => {
-        console.log("signOut está sendo executada.");
         setUser(null);
         setToken('');
         await api.logout();
@@ -44,8 +47,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         localStorage.setItem('authToken', token);
     }
 
+    const getToken = () => {
+        return localStorage.getItem('authToken');
+    }
+
     return (
-        <AuthContext.Provider value={{ user, signIn, signOut }}>
+        <AuthContext.Provider value={{ user, signIn, signOut, getToken }}>
             {children}
         </AuthContext.Provider>
     );

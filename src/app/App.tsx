@@ -20,13 +20,12 @@ function App() {
         <ThemeProvider theme={lightTheme}>
           <BrowserRouter>
             <Routes>
-              <Route path="/*" element={<Login />} />
+              <Route path="/*" element={<Dash />} />
               <Route path="/login" element={<Login />} />
               <Route path="/users" element={<RequireAuth ><User /></RequireAuth>} />
               <Route path="/dash" element={<RequireAuth ><Dash /></RequireAuth>} />
               <Route path="/account" element={<RequireAuth ><Account /></RequireAuth>} />
               <Route path="/account/:id" element={<RequireAuth ><AccountEdit /></RequireAuth>} />
-
             </Routes>
           </BrowserRouter>
         </ThemeProvider>

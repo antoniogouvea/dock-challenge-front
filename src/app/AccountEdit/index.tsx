@@ -1,15 +1,17 @@
 import { useParams } from "react-router-dom"
 import Navbar from "../NavBar"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useContext, useEffect, useState } from "react"
 import { api } from "../../api/axios.config"
 import { Box1, Box2, Box3, Button, InputTitle, InputValue, Wrapper, ButtonsWrapper, InputValue2 } from "./styled"
 import { AccountType } from "../types/Account"
 import { TBody, TBodyTR, TD, TH, THead, THeadTR, Table } from "../Dash/styled"
+import { AuthContext } from "../Auth/AuthContext"
 
 const AccountEdit = () => {
     const { id } = useParams()
     const [account, setAccount] = useState<AccountType>()
     const [value, setValue] = useState('')
+    const auth = useContext(AuthContext);
 
     const fetchAccount = useCallback(async () => {
         const results = await api.post('', {
@@ -26,10 +28,17 @@ const AccountEdit = () => {
                     _id
                     createdAt
                     value
+                    transactionType
                   }
                 }
               }`
-        })
+        },
+            {
+                headers: {
+                    Authorization: `Bearer ${auth.getToken()}`
+                }
+            }
+        )
         setAccount(results.data.data.getAccountById)
     }, [id])
 
@@ -46,7 +55,7 @@ const AccountEdit = () => {
                         createdAt
                         value
                         user
-                        
+                        transactionType
                       }
                     
                   }
@@ -55,12 +64,19 @@ const AccountEdit = () => {
                 variables: {
                     "value": +value,
                     "transactionType": type,
-                    "user": "123",
+                    "user": auth.user?._id,
                     "account": accountNumber?.toString()
 
                 }
 
-            })
+            },
+                {
+                    headers: {
+                        Authorization: `Bearer ${auth.getToken()}`
+                    }
+                }
+            )
+            console.log("🚀 ~ file: index.tsx:79 ~ sendValueToAccount ~ results:", results)
             fetchAccount()
         }
     }
@@ -107,7 +123,7 @@ const AccountEdit = () => {
                                 return (
                                     <TBodyTR className='operation' key={operation?._id}>
                                         <TD>{operation.createdAt}</TD>
-                                        <TD>{operation.value}</TD>
+                                        <TD>{operation.transactionType == 'add' ? "+" : "-"} {operation.value}</TD>
                                     </TBodyTR>
                                 );
                             })}

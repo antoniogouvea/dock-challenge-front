@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
 	border-radius: 3px;
     padding: 20px 20px 20px 25px;
     width:100%;
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
         flex-direction: column;
       }
 	
@@ -20,7 +20,7 @@ export const Box1 = styled(Box)`
     flex-direction: column;
     width: 50%;
     padding:0 50px 0 50px;
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
         width: 100%;
     }
 `;
@@ -31,7 +31,7 @@ export const Box2 = styled(Box)`
     flex-direction: column;
     width: 50%;
     padding:0 50px 0 50px;
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
         width: 100%;
     }
 

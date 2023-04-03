@@ -11,6 +11,7 @@ export type AccountType = {
             _id: string
             createdAt: string
             value: number
+            transactionType: string
         }
     ]
 }

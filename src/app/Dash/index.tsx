@@ -1,14 +1,16 @@
 import { faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../../api/axios.config";
 import Navbar from "../NavBar";
 import { AccountType } from "../types/Account";
-import { TBody, TBodyTR, TD, TDnav, TH, THead, THeadTR, Table, Wrapper } from './styled';
+import { TBody, TBodyTR, TD, TDnav, TH, THead, THeadTR, Table, Wrapper, StyledLink } from './styled';
+import { AuthContext } from '../Auth/AuthContext';
 function Dash() {
 
     const [accounts, setAccounts] = useState<AccountType[]>([])
+    const auth = useContext(AuthContext);
 
     const fetchAccounts = useCallback(async () => {
         const results = await api.post('', {
@@ -22,6 +24,10 @@ function Dash() {
                     }
               }}
               `
+        }, {
+            headers: {
+                Authorization: `Bearer ${auth.getToken()}`
+            }
         })
 
         setAccounts(results.data.data.getAllaccounts)
@@ -52,9 +58,9 @@ function Dash() {
                                     <TD>{account.agency}</TD>
                                     <TD>{account.client.name}</TD>
                                     <TDnav>
-                                        <Link to={`/account/${account._id}`}>
+                                        <StyledLink to={`/account/${account._id}`}>
                                             <FontAwesomeIcon icon={faPenToSquare} />Editar
-                                        </Link>
+                                        </StyledLink>
                                     </TDnav>
                                     <TDnav><FontAwesomeIcon icon={faTrashCan} />&nbsp;Deletar</TDnav>
 

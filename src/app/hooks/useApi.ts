@@ -1,29 +1,40 @@
 import axios from 'axios';
 import { User, UserLogin } from '../types/User';
-
-const api = axios.create({
-    baseURL: import.meta.env.REACT_APP_API
-});
+import { api } from "../../api/axios.config"
 
 export const useApi = () => ({
-    validateToken: async (token: string | null) => {
-        return {
-            user: { id: 3, name: 'José', email: 'jose@gmail.com' }
-        };
-        const response = await api.post('/validate', { token });
-        return response.data;
-    },
-    signIn: async (user: UserLogin) => {
-        return {
-            user: { id: 3, name: 'José', email: 'jose@gmail.com' },
-            token: '123456789'
-        };
-        // const response = await api.post('/signIn', { email, password });
-        // return response.data;
-    },
-    logout: async () => {
-        return { status: true };
-        const response = await api.post('/logout');
-        return response.data;
-    }
+  validateToken: async (token: string | null) => {
+    const response = await api.post('', {
+      query: `
+            {validateToken(token:"${token}"){
+           user{
+                name
+                _id
+              }
+        }}
+        `  });
+    return response.data;
+  },
+  signIn: async (user: UserLogin) => {
+    const { email, password } = user
+    const response = await api.post('', {
+      query: `
+        mutation {
+            login(data: { password: "${password}", email: "${email}" }) {
+              user{
+                email
+                _id
+                name
+              }
+              token
+            }
+          }
+        `  });
+    return response.data.data.login;
+  },
+  logout: async () => {
+    return { status: true };
+    const response = await api.post('/logout');
+    return response.data;
+  }
 });

@@ -38,7 +38,7 @@ const Login = () => {
                 <Input type="password" placeholder="Senha" value={password}
                     onChange={(e) => setPassword(e.target.value)} />
 
-                <Button width="100%" height="30px" bg='#00d8d8' >
+                <Button width="100%" height="30px" bg='#212121' color='#fff' >
                     Entrar
                 </Button>
             </Form>
