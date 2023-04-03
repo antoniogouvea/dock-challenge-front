@@ -76,7 +76,6 @@ const AccountEdit = () => {
                     }
                 }
             )
-            console.log("🚀 ~ file: index.tsx:79 ~ sendValueToAccount ~ results:", results)
             fetchAccount()
         }
     }

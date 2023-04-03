@@ -14,7 +14,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             if (user != null) return
             if (token) {
                 const data = await api.validateToken(token);
-                console.log("🚀 ~ file: AuthProvider.tsx:17 ~ validateToken ~ data:", data)
                 if (data.user) {
                     return setUser(data.user);
                 }
