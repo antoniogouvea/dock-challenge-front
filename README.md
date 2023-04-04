@@ -22,3 +22,8 @@ $ npm run dev
 ```
 
 Ele se encontra no endereço [https://dock-test.netlify.app/](link)
+
+```bash
+Login: dock@dock.com
+Password: dockTeste
+```
