@@ -17,4 +17,8 @@ O sistema possui algumas rotas?:
 
 Para rodar o projeto localmente é necessário
 
-    ´´npm run dev´´
+```bash
+$ npm run dev
+```
+
+Ele se encontra no endereço [https://dock-test.netlify.app/](link)
