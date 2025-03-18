@@ -1,27 +1,28 @@
 # dock-challenge-front
 
-Esse projeto foi criado utilizando o React com Vite como base. Utilizei também o styled components como pré-renderizador do CSS, toda a comunicação com o backend foi feita utilizando o Axios como padrão, possibilitando a mudança para Rest sem necessidade de uma nova biblioteca.
+This project was created using React with Vite as a base. I also used styled components as a CSS pre-renderer, all communication with the backend was done using Axios as standard, allowing the change to Rest without the need for a new library.
 
-Todo a comunicação é feita utilizando o JWT como validador de acesso. E isto inclui todas as rotas que fornecem algum dado para o cliente.
+All communication is done using JWT as an access validator. And this includes all routes that provide some data to the client.
 
-O sistema possui algumas rotas?:
+Does the system have some routes?:
 
 - Dash
-  Mostra todas as contas existentes, com os seus dados e possibilita a edição da mesma.
-- Dash/:id
-  Pemite a adição ou remoção do saldo da conta do cliente, alterando o valor do saldo.
-- Account
-  Permite a criação de uma nova conta.
-- User
-  Permite a criação de um novo usuário para a aplicação.
+Shows all existing accounts, with their data and allows editing of the same.
 
-Para rodar o projeto localmente é necessário
+- Dash/:id
+Allows adding or removing the balance of the client's account, changing the balance value.
+
+- Account
+Allows the creation of a new account.
+
+- User
+Allows the creation of a new user for the application.
+
+To run the project locally it is necessary
 
 ```bash
 $ npm run dev
 ```
-
-Ele se encontra no endereço [https://dock-test.netlify.app/](link)
 
 ```bash
 Login: dock@dock.com
